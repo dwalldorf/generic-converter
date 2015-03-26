@@ -56,7 +56,12 @@ public class PojoConverter {
 
       Method setter = optionalSetter.get();
       Object value = getValue(method, src);
-      setValue(value, setter, dest);
+
+      if (isConvertibleObject(value)) {
+        // TODO: implement recursive conversion
+      } else {
+        setValue(value, setter, dest);
+      }
     }
   }
 
@@ -97,6 +102,10 @@ public class PojoConverter {
 
   private static void setValue(Object value, Method setter, Object dest) throws Exception {
     setter.invoke(dest, value);
+  }
+
+  private static boolean isConvertibleObject(Object object) {
+    return false;
   }
 
 }

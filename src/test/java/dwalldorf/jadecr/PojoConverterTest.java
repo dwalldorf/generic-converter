@@ -22,7 +22,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import sample.dto.MessageDto;
 import sample.dto.UserDto;
+import sample.model.Message;
 import sample.model.User;
 
 public class PojoConverterTest {
@@ -30,13 +32,21 @@ public class PojoConverterTest {
   @Test
   public void testConvertToDto() {
     User user = mockUser();
-    UserDto dto = PojoConverter.convert(user, UserDto.class);
+    Message message = mockMessage(user);
 
-    assertNotNull(dto);
-    assertEquals(user.getId(), dto.getId());
-    assertEquals(user.getUsername(), dto.getUsername());
-    assertEquals(user.getPassword(), dto.getPassword());
-    assertEquals(user.getEmail(), dto.getEmail());
+    MessageDto messageDto = PojoConverter.convert(message, MessageDto.class);
+    UserDto userDto = messageDto.getUser();
+
+    assertNotNull(messageDto);
+    assertEquals(message.getId(), messageDto.getId());
+    assertEquals(message.getTitle(), messageDto.getTitle());
+    assertEquals(message.getMessage(), messageDto.getMessage());
+
+    assertNotNull(userDto);
+    assertEquals(user.getId(), userDto.getId());
+    assertEquals(user.getUsername(), userDto.getUsername());
+    assertEquals(user.getPassword(), userDto.getPassword());
+    assertEquals(user.getEmail(), userDto.getEmail());
   }
 
   @Test
@@ -60,6 +70,16 @@ public class PojoConverterTest {
     user.setNoMatchingFieldInDto("this field does not exist in dto");
 
     return user;
+  }
+
+  private Message mockMessage(final User user) {
+    Message message = new Message();
+    message.setId(42L);
+    message.setTitle("title");
+    message.setMessage("message");
+    message.setUser(user);
+
+    return message;
   }
 
   private UserDto mockUserDto() {
