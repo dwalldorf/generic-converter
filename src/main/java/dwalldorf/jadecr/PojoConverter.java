@@ -54,6 +54,9 @@ public class PojoConverter {
    * @return boolean
    */
   private boolean isConvertibleObject(Object object) {
+    if (object == null) {
+      return false;
+    }
     return object.getClass().isAnnotationPresent(Convertible.class);
   }
 
