@@ -22,33 +22,53 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import sample.dto.MessageDto;
 import sample.dto.UserDto;
+import sample.model.Message;
 import sample.model.User;
 
 public class PojoConverterTest {
 
+  private PojoConverter pojoConverter = new PojoConverter();
+
   @Test
   public void testConvertToDto() {
     User user = mockUser();
-    UserDto dto = PojoConverter.convert(user, UserDto.class);
+    Message message = mockMessage(user);
 
-    assertNotNull(dto);
-    assertEquals(user.getId(), dto.getId());
-    assertEquals(user.getUsername(), dto.getUsername());
-    assertEquals(user.getPassword(), dto.getPassword());
-    assertEquals(user.getEmail(), dto.getEmail());
+    MessageDto messageDto = (MessageDto) pojoConverter.convert(message);
+    UserDto userDto = messageDto.getUser();
+
+    assertNotNull(messageDto);
+    assertEquals(message.getId(), messageDto.getId());
+    assertEquals(message.getTitle(), messageDto.getTitle());
+    assertEquals(message.getMessage(), messageDto.getMessage());
+
+    assertNotNull(userDto);
+    assertEquals(user.getId(), userDto.getId());
+    assertEquals(user.getUsername(), userDto.getUsername());
+    assertEquals(user.getPassword(), userDto.getPassword());
+    assertEquals(user.getEmail(), userDto.getEmail());
   }
 
   @Test
   public void testConvertToEntity() {
     UserDto userDto = mockUserDto();
-    User entity = PojoConverter.convert(userDto, User.class);
+    MessageDto messageDto = mockMessageDto(userDto);
 
-    assertNotNull(entity);
-    assertEquals(userDto.getId(), entity.getId());
-    assertEquals(userDto.getUsername(), entity.getUsername());
-    assertEquals(userDto.getPassword(), entity.getPassword());
-    assertEquals(userDto.getEmail(), entity.getEmail());
+    Message message = (Message) pojoConverter.convert(messageDto);
+    User user = message.getUser();
+
+    assertNotNull(messageDto);
+    assertEquals(messageDto.getId(), message.getId());
+    assertEquals(messageDto.getTitle(), message.getTitle());
+    assertEquals(messageDto.getMessage(), message.getMessage());
+
+    assertNotNull(user);
+    assertEquals(userDto.getId(), user.getId());
+    assertEquals(userDto.getUsername(), user.getUsername());
+    assertEquals(userDto.getPassword(), user.getPassword());
+    assertEquals(userDto.getEmail(), user.getEmail());
   }
 
   private User mockUser() {
@@ -62,6 +82,16 @@ public class PojoConverterTest {
     return user;
   }
 
+  private Message mockMessage(final User user) {
+    Message message = new Message();
+    message.setId(42L);
+    message.setTitle("title");
+    message.setMessage("message");
+    message.setUser(user);
+
+    return message;
+  }
+
   private UserDto mockUserDto() {
     UserDto userDto = new UserDto();
     userDto.setId(1L);
@@ -70,5 +100,15 @@ public class PojoConverterTest {
     userDto.setPassword("password");
 
     return userDto;
+  }
+
+  private MessageDto mockMessageDto(final UserDto userDto) {
+    MessageDto messageDto = new MessageDto();
+    messageDto.setId(42L);
+    messageDto.setTitle("title");
+    messageDto.setMessage("messageDto");
+    messageDto.setUser(userDto);
+
+    return messageDto;
   }
 }

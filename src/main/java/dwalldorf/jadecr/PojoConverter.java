@@ -20,6 +20,7 @@ package dwalldorf.jadecr;
 
 import dwalldorf.jadecr.exception.ConversionException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Optional;
 
 /**
@@ -27,12 +28,16 @@ import java.util.Optional;
  */
 public class PojoConverter {
 
-  public static <D> D convert(Object src, final Class<D> destClass) throws ConversionException {
-    D dest = null;
+  public Object convert(Object src) throws ConversionException {
+    Object dest = null;
+
+    if (!isConvertibleObject(src)) {
+      return null;
+    }
 
     if (src != null) {
       try {
-        dest = destClass.newInstance();
+        dest = getNewDestInstance(src);
         copyValues(src, dest);
       } catch (Exception e) {
         throw new ConversionException(e.getMessage(), e);
@@ -42,29 +47,83 @@ public class PojoConverter {
     return dest;
   }
 
-  private static void copyValues(Object src, Object dest) throws Exception {
+  /**
+   * Tells whether {@code object} is annotated with {@link dwalldorf.jadecr.Convertible} or not.
+   *
+   * @param object to check
+   * @return boolean
+   */
+  private boolean isConvertibleObject(final Object object) {
+    if (object == null) {
+      return false;
+    }
+    return object.getClass().isAnnotationPresent(Convertible.class);
+  }
+
+  private Object getNewDestInstance(final Object src) throws Exception {
+    return getConvertibleDestClass(src).newInstance();
+  }
+
+  private Class getConvertibleDestClass(final Object object) {
+    Convertible annotation = object.getClass().getAnnotation(Convertible.class);
+    return annotation.destClass();
+  }
+
+  private void copyValues(final Object src, Object dest) throws Exception {
     Method[] methods = src.getClass().getMethods();
     for (Method method : methods) {
       if (!isGetter(method)) {
         continue;
       }
 
-      Optional<Method> optionalSetter = getSetter(method, dest);
-      if (!optionalSetter.isPresent()) {
-        continue;
-      }
-
-      Method setter = optionalSetter.get();
       Object value = getValue(method, src);
-      setValue(value, setter, dest);
+
+      if (isConvertibleObject(value)) {
+        Optional<Method> optionalSetter = getSetter(method, dest, getConvertibleDestClass(value));
+        if (!optionalSetter.isPresent()) {
+          continue;
+        }
+
+        Method setter = optionalSetter.get();
+        Object convertedValue = convert(value);
+        setValue(convertedValue, setter, dest);
+      } else {
+        Optional<Method> optionalSetter = getSetter(method, dest);
+        if (!optionalSetter.isPresent()) {
+          continue;
+        }
+
+        Method setter = optionalSetter.get();
+        setValue(value, setter, dest);
+      }
     }
   }
 
-  private static boolean isGetter(Method method) {
-    return method.getName().startsWith("get");
+  /**
+   * Tells whether {@code method} is a (publicly accessible) getter or not.
+   *
+   * @param method the method to check
+   * @return boolean, telling you if this method is a getter
+   */
+  private boolean isGetter(final Method method) {
+    // check if method starts with 'get'
+    if (!method.getName().startsWith("get")) {
+      return false;
+    }
+
+    // check if method takes more than 0 arguments
+    if (method.getTypeParameters().length > 0) {
+      return false;
+    }
+
+    // check if method is accessible
+    if (method.getModifiers() == Modifier.PRIVATE) {
+      return false;
+    }
+    return true;
   }
 
-  private static Optional<Method> getSetter(Method getter, Object dest) {
+  private Optional<Method> getSetter(final Method getter, final Object dest, final Class valueType) {
     String setterName = "set" + getter.getName().substring(3);
 
     for (Method method : dest.getClass().getMethods()) {
@@ -76,8 +135,8 @@ public class PojoConverter {
       }
 
       Class<?> setterParameterType = method.getParameterTypes()[0];
-      Class<?> getterReturnType = getter.getReturnType();
-      if (!setterParameterType.getName().equals(getterReturnType.getName())) {
+
+      if (!setterParameterType.getName().equals(valueType.getName())) {
         continue;
       }
 
@@ -87,15 +146,20 @@ public class PojoConverter {
     return Optional.empty();
   }
 
-  private static boolean isSetter(Method method) {
+  private Optional<Method> getSetter(final Method getter, final Object dest) {
+    Class<?> getterReturnType = getter.getReturnType();
+    return getSetter(getter, dest, getterReturnType);
+  }
+
+  private boolean isSetter(final Method method) {
     return method.getName().startsWith("set");
   }
 
-  private static Object getValue(Method getter, Object src) throws Exception {
+  private Object getValue(final Method getter, final Object src) throws Exception {
     return getter.invoke(src);
   }
 
-  private static void setValue(Object value, Method setter, Object dest) throws Exception {
+  private void setValue(final Object value, final Method setter, Object dest) throws Exception {
     setter.invoke(dest, value);
   }
 
