@@ -18,9 +18,13 @@
  */
 package sample.model;
 
+import dwalldorf.jadecr.Convertible;
+import sample.dto.MessageDto;
+
 /**
  * A paradigmatic model for a message. Its only use is to be converted for tests.
  */
+@Convertible(destClass = MessageDto.class)
 public class Message {
 
   private Long id;

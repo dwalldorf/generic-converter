@@ -29,12 +29,14 @@ import sample.model.User;
 
 public class PojoConverterTest {
 
+  private PojoConverter pojoConverter = new PojoConverter();
+
   @Test
   public void testConvertToDto() {
     User user = mockUser();
     Message message = mockMessage(user);
 
-    MessageDto messageDto = PojoConverter.convert(message, MessageDto.class);
+    MessageDto messageDto = (MessageDto) pojoConverter.convert(message);
     UserDto userDto = messageDto.getUser();
 
     assertNotNull(messageDto);
@@ -52,7 +54,7 @@ public class PojoConverterTest {
   @Test
   public void testConvertToEntity() {
     UserDto userDto = mockUserDto();
-    User entity = PojoConverter.convert(userDto, User.class);
+    User entity = (User) pojoConverter.convert(userDto);
 
     assertNotNull(entity);
     assertEquals(userDto.getId(), entity.getId());

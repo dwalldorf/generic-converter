@@ -18,9 +18,13 @@
  */
 package sample.model;
 
+import dwalldorf.jadecr.Convertible;
+import sample.dto.UserDto;
+
 /**
  * A paradigmatic model for a user. Its only use is to be converted for tests.
  */
+@Convertible(destClass = UserDto.class)
 public class User {
 
   private Long id;
