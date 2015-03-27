@@ -54,13 +54,21 @@ public class PojoConverterTest {
   @Test
   public void testConvertToEntity() {
     UserDto userDto = mockUserDto();
-    User entity = (User) pojoConverter.convert(userDto);
+    MessageDto messageDto = mockMessageDto(userDto);
 
-    assertNotNull(entity);
-    assertEquals(userDto.getId(), entity.getId());
-    assertEquals(userDto.getUsername(), entity.getUsername());
-    assertEquals(userDto.getPassword(), entity.getPassword());
-    assertEquals(userDto.getEmail(), entity.getEmail());
+    Message message = (Message) pojoConverter.convert(messageDto);
+    User user = message.getUser();
+
+    assertNotNull(messageDto);
+    assertEquals(messageDto.getId(), message.getId());
+    assertEquals(messageDto.getTitle(), message.getTitle());
+    assertEquals(messageDto.getMessage(), message.getMessage());
+
+    assertNotNull(user);
+    assertEquals(userDto.getId(), user.getId());
+    assertEquals(userDto.getUsername(), user.getUsername());
+    assertEquals(userDto.getPassword(), user.getPassword());
+    assertEquals(userDto.getEmail(), user.getEmail());
   }
 
   private User mockUser() {
@@ -92,5 +100,15 @@ public class PojoConverterTest {
     userDto.setPassword("password");
 
     return userDto;
+  }
+
+  private MessageDto mockMessageDto(final UserDto userDto) {
+    MessageDto messageDto = new MessageDto();
+    messageDto.setId(42L);
+    messageDto.setTitle("title");
+    messageDto.setMessage("messageDto");
+    messageDto.setUser(userDto);
+
+    return messageDto;
   }
 }
