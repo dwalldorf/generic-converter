@@ -53,7 +53,7 @@ public class PojoConverter {
    * @param object to check
    * @return boolean
    */
-  private boolean isConvertibleObject(Object object) {
+  private boolean isConvertibleObject(final Object object) {
     if (object == null) {
       return false;
     }
@@ -69,7 +69,7 @@ public class PojoConverter {
     return annotation.destClass();
   }
 
-  private void copyValues(Object src, Object dest) throws Exception {
+  private void copyValues(final Object src, Object dest) throws Exception {
     Method[] methods = src.getClass().getMethods();
     for (Method method : methods) {
       if (!isGetter(method)) {
@@ -105,7 +105,7 @@ public class PojoConverter {
    * @param method the method to check
    * @return boolean, telling you if this method is a getter
    */
-  private boolean isGetter(Method method) {
+  private boolean isGetter(final Method method) {
     // check if method starts with 'get'
     if (!method.getName().startsWith("get")) {
       return false;
@@ -123,7 +123,7 @@ public class PojoConverter {
     return true;
   }
 
-  private Optional<Method> getSetter(Method getter, Object dest, Class valueType) {
+  private Optional<Method> getSetter(final Method getter, final Object dest, final Class valueType) {
     String setterName = "set" + getter.getName().substring(3);
 
     for (Method method : dest.getClass().getMethods()) {
@@ -146,20 +146,20 @@ public class PojoConverter {
     return Optional.empty();
   }
 
-  private Optional<Method> getSetter(Method getter, Object dest) {
+  private Optional<Method> getSetter(final Method getter, final Object dest) {
     Class<?> getterReturnType = getter.getReturnType();
     return getSetter(getter, dest, getterReturnType);
   }
 
-  private boolean isSetter(Method method) {
+  private boolean isSetter(final Method method) {
     return method.getName().startsWith("set");
   }
 
-  private Object getValue(Method getter, Object src) throws Exception {
+  private Object getValue(final Method getter, final Object src) throws Exception {
     return getter.invoke(src);
   }
 
-  private void setValue(Object value, Method setter, Object dest) throws Exception {
+  private void setValue(final Object value, final Method setter, Object dest) throws Exception {
     setter.invoke(dest, value);
   }
 
