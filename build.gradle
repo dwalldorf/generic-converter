@@ -22,12 +22,13 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
-    classpath("org.springframework:springloaded:1.2.3.RELEASE")
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE'
+    classpath 'org.springframework:springloaded:1.2.3.RELEASE'
+    classpath 'com.adaptc.gradle:nexus-workflow:0.6'
   }
 }
 plugins {
-  id "com.jfrog.bintray" version "1.1"
+  id 'com.jfrog.bintray' version '1.1'
 }
 repositories {
   jcenter()
@@ -38,11 +39,15 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
+apply from: 'settings.gradle'
 apply from: 'secret.gradle'
 
-sourceCompatibility = sourceCompatibilityVersion
-version = projectVersion
+dependencies {
+  testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
 mainClassName = mainClass
+sourceCompatibility = sourceCompatibilityVersion
 
 jar {
   baseName = projectName
@@ -51,10 +56,6 @@ jar {
 
 artifacts {
   archives jar
-}
-
-dependencies {
-  testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 bintray {
@@ -74,7 +75,10 @@ bintray {
   pkg {
     repo = 'dwalldorf-java'
     name = 'jadecR'
+
+    //noinspection GroovyAssignabilityCheck
     version {
+      //noinspection GrReassignedInClosureLocalVar
       name = projectVersion
       vcsTag = projectVersion
       gpg {
@@ -89,13 +93,6 @@ bintray {
     labels = ['java', 'converter', 'DTO entity converter', 'generic']
     publicDownloadNumbers = false
   }
-}
-
-task writeNewPom << {
-  pom {
-    project {
-    }
-  }.writeTo("$buildDir/newpom.xml")
 }
 
 configurations {

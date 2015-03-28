@@ -1,0 +1,8 @@
+ext {
+  projectName = 'jadecR'
+  projectVersion = '1.0.0-SNAPSHOT'
+
+  mainClass = 'dwalldorf.jadecr.PojoConverter'
+  sourceCompatibilityVersion = '1.8'
+  gradleVersion = '2.3'
+}
