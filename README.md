@@ -7,11 +7,11 @@ Most often, when writing backend applications, that somehow store data and also 
 And so, here is a try to fix this.
 
 # How it works
-There is a `@Convertible` annotation, you have to add to every class you want to be convertible. Also, the annotation takes a  `destClass` argument, asking for the compliant class, it should be converted to.
+There is a [`@Convertible`](src/main/java/dwalldorf/jadecr/Convertible.java) annotation, you have to add to every class you want to be convertible. Also, the annotation takes a  `destClass` argument, asking for the compliant class, it should be converted to.
 
 Imagine you have a `User` model and a `UserDto`, to communicate the user to the outside world. 
 
-You would annotate the `User` model as follows: `@Convertible(destClass = UserDto.class)`. You can now pass the `User` model to the converter, and it will know, which class you want it to be converted to. 
+You would annotate the `User` model as follows: `@Convertible(destClass = UserDto.class)`. You can now pass the `User` model to the [converter](src/main/java/dwalldorf/jadecr/PojoConverter.java), and it will know, which class you want it to be converted to. 
 
 Similarily to this, you will want to annotate your `UserDto`: `@Convertible(destClass = User.class)`. So you can convert them each way. 
 
