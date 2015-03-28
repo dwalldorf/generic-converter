@@ -18,27 +18,31 @@
  */
 buildscript {
   repositories {
-    mavenCentral()
     jcenter()
+    mavenCentral()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
-    classpath("org.springframework:springloaded:1.2.1.RELEASE")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+    classpath("org.springframework:springloaded:1.2.3.RELEASE")
   }
 }
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
-
-sourceCompatibility = 1.8
-version = projectVersion
-mainClassName = "dwalldorf.jadecr.PojoConverter"
-
+plugins {
+  id "com.jfrog.bintray" version "1.1"
+}
 repositories {
   jcenter()
   mavenCentral()
 }
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'spring-boot'
+apply from: 'secret.gradle'
+
+sourceCompatibility = sourceCompatibilityVersion
+version = projectVersion
+mainClassName = mainClass
 
 jar {
   baseName = projectName
@@ -49,12 +53,51 @@ artifacts {
   archives jar
 }
 
-uploadArchives {
-  repositories {
+dependencies {
+  testCompile group: 'junit', name: 'junit', version: '4.11'
+}
 
+bintray {
+  user = bintrayUser
+  key = bintrayApiKey
+  configurations = ['published', 'archives']
+
+  dryRun = false
+  publish = true
+
+  filesSpec {
+    from 'files'
+    into 'standalone_files/level1'
+    rename '(.+)\\.(.+)', '$1-suffix.$2'
+  }
+
+  pkg {
+    repo = 'dwalldorf-java'
+    name = 'jadecR'
+    version {
+      name = projectVersion
+      vcsTag = projectVersion
+      gpg {
+        sign = true
+      }
+    }
+
+    websiteUrl = 'https://github.com/dwalldorf/jadecR'
+    issueTrackerUrl = 'https://github.com/dwalldorf/jadecR/issues'
+    vcsUrl = 'https://github.com/dwalldorf/jadecR'
+    licenses = ['GPL-2.0']
+    labels = ['java', 'converter', 'DTO entity converter', 'generic']
+    publicDownloadNumbers = false
   }
 }
 
-dependencies {
-  testCompile group: 'junit', name: 'junit', version: '4.11'
+task writeNewPom << {
+  pom {
+    project {
+    }
+  }.writeTo("$buildDir/newpom.xml")
+}
+
+configurations {
+  published
 }
