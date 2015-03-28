@@ -48,12 +48,12 @@ dependencies {
 
 mainClassName = mainClass
 sourceCompatibility = sourceCompatibilityVersion
+version = projectVersion
 
 jar {
   baseName = projectName
   version = projectVersion
 }
-version = projectVersion
 
 artifacts {
   archives jar
