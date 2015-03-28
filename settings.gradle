@@ -1,6 +1,9 @@
 ext {
   projectName = 'jadecR'
+  projectGroup = 'dwalldorf'
   projectVersion = '1.0.0-SNAPSHOT'
+
+  bintrayRepo = 'dwalldorf-java'
 
   mainClass = 'dwalldorf.jadecr.PojoConverter'
   sourceCompatibilityVersion = '1.8'
