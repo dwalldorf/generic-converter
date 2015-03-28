@@ -33,6 +33,7 @@ apply plugin: 'spring-boot'
 
 sourceCompatibility = 1.8
 version = projectVersion
+mainClassName = "dwalldorf.jadecr.PojoConverter"
 
 repositories {
   jcenter()
@@ -42,6 +43,16 @@ repositories {
 jar {
   baseName = projectName
   version = projectVersion
+}
+
+artifacts {
+  archives jar
+}
+
+uploadArchives {
+  repositories {
+
+  }
 }
 
 dependencies {
