@@ -26,7 +26,10 @@ import java.util.Optional;
 
 /**
  * This converter will search for all {@code getter}-methods in the src object and try to find a matching setter in
- * the desired {code destType} object.
+ * the desired {code destType} object.<br />
+ * While converting, it will actually use the getters and setters of the respecting objects.<br /><br />
+ *
+ * Objects to be converted, must have the {@link dwalldorf.jadecr.Convertible} annotation configured.
  *
  * @see GetterSetterConverter#isGetter(java.lang.reflect.Method)
  * @see GetterSetterConverter#getSetter(java.lang.reflect.Method, Object, Class)
