@@ -18,7 +18,6 @@
  */
 package dwalldorf.jadecr.converter;
 
-import dwalldorf.jadecr.Convertible;
 import dwalldorf.jadecr.exception.ConversionException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -39,45 +38,18 @@ import java.util.Optional;
 public class GetterSetterConverter implements Converter {
 
   public Object convert(Object src) throws ConversionException {
-    Object dest = null;
-
-    if (!isConvertibleObject(src)) {
+    if (!ConvertUtil.isConvertibleObject(src)) {
       return null;
     }
 
-    if (src != null) {
-      try {
-        dest = getNewDestInstance(src);
-        copyValues(src, dest);
-      } catch (Exception e) {
-        throw new ConversionException(e.getMessage(), e);
-      }
+    try {
+      Object dest = ConvertUtil.getNewDestInstance(src);
+      copyValues(src, dest);
+
+      return dest;
+    } catch (Exception e) {
+      throw new ConversionException(e.getMessage(), e);
     }
-
-    return dest;
-  }
-
-  /**
-   * Tells whether {@code object} is annotated with {@link dwalldorf.jadecr.Convertible} or not.
-   *
-   * @param object to check
-   *
-   * @return boolean
-   */
-  private boolean isConvertibleObject(final Object object) {
-    if (object == null) {
-      return false;
-    }
-    return object.getClass().isAnnotationPresent(Convertible.class);
-  }
-
-  private Object getNewDestInstance(final Object src) throws Exception {
-    return getConvertibleDestClass(src).newInstance();
-  }
-
-  private Class getConvertibleDestClass(final Object object) {
-    Convertible annotation = object.getClass().getAnnotation(Convertible.class);
-    return annotation.destClass();
   }
 
   private void copyValues(final Object src, Object dest) throws Exception {
@@ -89,8 +61,8 @@ public class GetterSetterConverter implements Converter {
 
       Object value = getValue(method, src);
 
-      if (isConvertibleObject(value)) {
-        Optional<Method> optionalSetter = getSetter(method, dest, getConvertibleDestClass(value));
+      if (ConvertUtil.isConvertibleObject(value)) {
+        Optional<Method> optionalSetter = getSetter(method, dest, ConvertUtil.getConvertibleDestClass(value));
         if (!optionalSetter.isPresent()) {
           continue;
         }
