@@ -29,7 +29,7 @@ import sample.model.User;
 
 public class GetterSetterConverterTest {
 
-  private GetterSetterConverter getterSetterConverter = new GetterSetterConverter();
+  private Converter getterSetterConverter = new GetterSetterConverter();
 
   @Test
   public void testConvertToDto() {
