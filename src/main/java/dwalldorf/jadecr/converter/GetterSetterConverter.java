@@ -16,17 +16,24 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-package dwalldorf.jadecr;
+package dwalldorf.jadecr.converter;
 
+import dwalldorf.jadecr.Convertible;
 import dwalldorf.jadecr.exception.ConversionException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Optional;
 
 /**
+ * This converter will search for all {@code getter}-methods in the src object and try to find a matching setter in
+ * the desired {code destType} object.
  *
+ * @see GetterSetterConverter#isGetter(java.lang.reflect.Method)
+ * @see GetterSetterConverter#getSetter(java.lang.reflect.Method, Object, Class)
+ * @see GetterSetterConverter#copyValues(Object, Object)
+ * @see dwalldorf.jadecr.Convertible
  */
-public class PojoConverter {
+public class GetterSetterConverter implements Converter {
 
   public Object convert(Object src) throws ConversionException {
     Object dest = null;
@@ -51,6 +58,7 @@ public class PojoConverter {
    * Tells whether {@code object} is annotated with {@link dwalldorf.jadecr.Convertible} or not.
    *
    * @param object to check
+   *
    * @return boolean
    */
   private boolean isConvertibleObject(final Object object) {
@@ -100,9 +108,16 @@ public class PojoConverter {
   }
 
   /**
-   * Tells whether {@code method} is a (publicly accessible) getter or not.
+   * Tells whether {@code method} is a (publicly accessible) getter or not.<br />
+   * The method must matching the following criteria:
+   * <ul>
+   * <li>its name starts with {@code get}</li>
+   * <li>it takes exactly 0 arguments</li>
+   * <li>its modifier is not {@code private}</li>
+   * </ul>
    *
    * @param method the method to check
+   *
    * @return boolean, telling you if this method is a getter
    */
   private boolean isGetter(final Method method) {
@@ -123,6 +138,45 @@ public class PojoConverter {
     return true;
   }
 
+  // @formatter:off
+  /**
+   * This method tries to find a matching setter method in {@code dest} and return it.<br />
+   * It works like this:
+   * <ul>
+   *   <li>
+   *     define the matching setter name:
+   *     <ul>
+   *       <li>
+   *         remove {@code get} from {@code getter.getName()}
+   *       </li>
+   *       <li>
+   *         prepend {@code set}
+   *       </li>
+   *     </ul>
+   *   </li>
+   *   <li>
+   *     find the setter method:
+   *     <ul>
+   *       <li>
+   *         find all setters
+   *       </li>
+   *       <li>
+   *         see if the setter method name matches the setter name
+   *       </li>
+   *       <li>
+   *         see if the {@code valueType} and the argument type of the setter are equal
+   *       </li>
+   *     </ul>
+   *   </li>
+   * </ul>
+   *
+   * @param getter the getter method
+   * @param dest the object, we need to find a setter method for
+   * @param valueType the return type of the getter method
+   *
+   * @return the matching setter method or {@code Optional.empty()}
+   */
+  // @formatter:on
   private Optional<Method> getSetter(final Method getter, final Object dest, final Class valueType) {
     String setterName = "set" + getter.getName().substring(3);
 
