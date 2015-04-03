@@ -33,7 +33,7 @@ ConverterFactory.getInstance();
 ```
 This will return a singleton instance of the configured type.
 
-#### Convert a `@Convertible` annotated object: 
+#### Convert an object: 
 ```java
 // user is annotated: @Convertible(destClass = UserDto.class)
 UserDto userDto = (UserDto) converter.convert(user);
