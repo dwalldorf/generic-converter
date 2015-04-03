@@ -24,9 +24,9 @@ import java.lang.reflect.Modifier;
 import java.util.Optional;
 
 /**
- * This converter will search for all {@code getter}-methods in the src object and try to find a matching setter in
- * the desired {code destType} object.<br />
- * While converting, it will actually use the getters and setters of the respecting objects.<br /><br />
+ * This converter will search for all {@code getter}-methods in the src object and try to find a matching setter in the
+ * desired {code destType} object.<br /> While converting, it will actually use the getters and setters of the
+ * respecting objects.<br /><br />
  *
  * Objects to be converted, must have the {@link dwalldorf.jadecr.Convertible} annotation configured.
  *
@@ -82,19 +82,21 @@ public class GetterSetterConverter implements Converter {
     }
   }
 
+  // @formatter:off
   /**
    * Tells whether {@code method} is a (publicly accessible) getter or not.<br />
    * The method must matching the following criteria:
    * <ul>
-   * <li>its name starts with {@code get}</li>
-   * <li>it takes exactly 0 arguments</li>
-   * <li>its modifier is not {@code private}</li>
+   *   <li>its name starts with {@code get}</li>
+   *   <li>it takes exactly 0 arguments</li>
+   *   <li>its modifier is not {@code private}</li>
    * </ul>
    *
    * @param method the method to check
    *
    * @return boolean, telling you if this method is a getter
    */
+  // @formatter:on
   private boolean isGetter(final Method method) {
     // check if method starts with 'get'
     if (!method.getName().startsWith("get")) {
@@ -175,19 +177,78 @@ public class GetterSetterConverter implements Converter {
     return Optional.empty();
   }
 
+  /**
+   * Gets the return type of the {@code getter} and calls {@link dwalldorf.jadecr.converter.GetterSetterConverter#getSetter(java.lang.reflect.Method,
+   * Object, Class)}.
+   *
+   * @param getter the getter method
+   * @param dest   the object, we need to find a setter method for
+   *
+   * @return the matching setter method or {@code Optional.empty()}
+   *
+   * @see dwalldorf.jadecr.converter.GetterSetterConverter#getSetter(java.lang.reflect.Method, Object, Class)
+   */
   private Optional<Method> getSetter(final Method getter, final Object dest) {
     Class<?> getterReturnType = getter.getReturnType();
     return getSetter(getter, dest, getterReturnType);
   }
 
+  // @formatter:off
+  /**
+   * Tells whether {@code method} is a (publicly accessible) setter or not.<br />
+   * The method must matching the following criteria:
+   * <ul>
+   *   <li>its name starts with {@code set}</li>
+   *   <li>it takes exactly 1 argument</li>
+   *   <li>its modifier is not {@code private}</li>
+   * </ul>
+   *
+   * @param method the method to check
+   *
+   * @return boolean, telling you if this method is a getter
+   */
+  // @formatter:on
   private boolean isSetter(final Method method) {
-    return method.getName().startsWith("set");
+    // check if method starts with 'set'
+    if (!method.getName().startsWith("set")) {
+      return false;
+    }
+
+    // make sure method takes exactly 1 argument
+    if (method.getTypeParameters().length == 1) {
+      return false;
+    }
+
+    // check if method is accessible
+    if (method.getModifiers() == Modifier.PRIVATE) {
+      return false;
+    }
+    return true;
   }
 
+  /**
+   * Invokes the getter on {@code src}.
+   *
+   * @param getter the getter to invoke
+   * @param src    object to apply getter
+   *
+   * @return the return value of the getter
+   *
+   * @throws Exception
+   */
   private Object getValue(final Method getter, final Object src) throws Exception {
     return getter.invoke(src);
   }
 
+  /**
+   * Invokes the {@code setter} on with {@code value} on {@code dest}.
+   *
+   * @param value  the value to set
+   * @param setter the setter method
+   * @param dest   object to apply setter
+   *
+   * @throws Exception
+   */
   private void setValue(final Object value, final Method setter, Object dest) throws Exception {
     setter.invoke(dest, value);
   }
