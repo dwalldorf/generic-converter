@@ -49,6 +49,15 @@ public class PropertyConverter implements Converter {
     }
   }
 
+  /**
+   * Will search for all fields that exist equally in both, {@code src} and {@code dest}, and set copy the value from
+   * {@code src} to {@code dest}.
+   *
+   * @param src  the object to be copied
+   * @param dest the object to copy into
+   *
+   * @throws IllegalAccessException
+   */
   private void copyValues(final Object src, final Object dest) throws IllegalAccessException {
     ReflectionUtils.doWithFields(src.getClass(), field -> {
       Field destField = ReflectionUtils.findField(dest.getClass(), field.getName());
@@ -64,6 +73,13 @@ public class PropertyConverter implements Converter {
     });
   }
 
+  /**
+   * Sets the value of {@code destField} in object {@code dest} to {@code value}.
+   *
+   * @param value     the value to set
+   * @param destField the field to assign
+   * @param dest      the object to manipulate
+   */
   private void setValue(Object value, Field destField, Object dest) {
     if (value != null) {
       if (ConvertUtil.isConvertibleObject(value)) {
