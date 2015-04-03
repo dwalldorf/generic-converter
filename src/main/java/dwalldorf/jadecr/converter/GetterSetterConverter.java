@@ -109,10 +109,7 @@ public class GetterSetterConverter implements Converter {
     }
 
     // check if method is accessible
-    if (method.getModifiers() == Modifier.PRIVATE) {
-      return false;
-    }
-    return true;
+    return Modifier.isPublic(method.getModifiers());
   }
 
   // @formatter:off
