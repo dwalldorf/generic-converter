@@ -25,9 +25,10 @@ import java.util.Optional;
 
 /**
  * This converter will search for all {@code getter}-methods in the src object and try to find a matching setter in the
- * desired {code destType} object.<br /> While converting, it will actually use the getters and setters of the
- * respecting objects.<br /><br />
- *
+ * desired {code destType} object.
+ * <p>
+ * While converting, it will actually use the getters and setters of the respecting objects.
+ * <p>
  * Objects to be converted, must have the {@link dwalldorf.jadecr.Convertible} annotation configured.
  *
  * @see GetterSetterConverter#isGetter(java.lang.reflect.Method)
@@ -176,12 +177,11 @@ public class GetterSetterConverter implements Converter {
   }
 
   /**
-   * Gets the return type of the {@code getter} and calls {@link dwalldorf.jadecr.converter.GetterSetterConverter#getSetter(java.lang.reflect.Method,
-   * Object, Class)}.
+   * Gets the return type of the {@code getter} and calls
+   * {@link dwalldorf.jadecr.converter.GetterSetterConverter#getSetter(java.lang.reflect.Method, Object, Class)}.
    *
    * @param getter the getter method
    * @param dest   the object, we need to find a setter method for
-   *
    * @return the matching setter method or {@code Optional.empty()}
    *
    * @see dwalldorf.jadecr.converter.GetterSetterConverter#getSetter(java.lang.reflect.Method, Object, Class)
@@ -229,7 +229,6 @@ public class GetterSetterConverter implements Converter {
    *
    * @param getter the getter to invoke
    * @param src    object to apply getter
-   *
    * @return the return value of the getter
    *
    * @throws Exception
@@ -244,7 +243,6 @@ public class GetterSetterConverter implements Converter {
    * @param value  the value to set
    * @param setter the setter method
    * @param dest   object to apply setter
-   *
    * @throws Exception
    */
   private void setValue(final Object value, final Method setter, Object dest) throws Exception {

@@ -21,14 +21,28 @@ package dwalldorf.jadecr.converter;
 import dwalldorf.jadecr.Convertible;
 
 /**
- *
+ * A helper util for actual converters.
  */
 class ConvertUtil {
 
+  /**
+   * Creates and returns a new instance of the configured {@code destClass} of {@code src}.
+   *
+   * @param src the object to determine the desired class from
+   * @return new instance of {@code destClass} in {@code src}
+   *
+   * @throws Exception
+   */
   static Object getNewDestInstance(final Object src) throws Exception {
     return getConvertibleDestClass(src).newInstance();
   }
 
+  /**
+   * Returns the configured {@code destClass} of {@code object}.
+   *
+   * @param object object to look into
+   * @return the destClass
+   */
   static Class getConvertibleDestClass(final Object object) {
     Convertible annotation = object.getClass().getAnnotation(Convertible.class);
     return annotation.destClass();
@@ -38,7 +52,6 @@ class ConvertUtil {
    * Tells whether {@code object} is annotated with {@link dwalldorf.jadecr.Convertible} or not.
    *
    * @param object to check
-   *
    * @return boolean
    */
   static boolean isConvertibleObject(final Object object) {
