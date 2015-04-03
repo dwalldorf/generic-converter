@@ -11,10 +11,23 @@ import java.util.Map;
  */
 public class ConverterFactory {
 
+  /**
+   * Map of converter instances by {@link dwalldorf.jadecr.ConverterType}
+   */
   private final static Map<ConverterType, Converter> instanceMap = new HashMap<>();
 
+  /**
+   * The configured converter type
+   */
   private static ConverterType converterType = ConverterType.GETTER_SETTER;
 
+  /**
+   * Returns a {@link dwalldorf.jadecr.converter.Converter} instance of the configured type.
+   *
+   * @return singleton instance of converter
+   *
+   * @see dwalldorf.jadecr.ConverterFactory#configureType(ConverterType)
+   */
   public static Converter getInstance() {
     if (!instanceMap.containsKey(converterType)) {
       instanceMap.put(converterType, createInstance(converterType));
@@ -23,10 +36,21 @@ public class ConverterFactory {
     return instanceMap.get(converterType);
   }
 
+  /**
+   * Sets the {@code ConverterType}, this factory should return when the {@code getInstance} method is called.
+   *
+   * @param type the desired {@code ConverterType}
+   */
   public static void configureType(final ConverterType type) {
     converterType = type;
   }
 
+  /**
+   * Creates a new instance of {@code type} and puts it into the {@code instanceMap}.
+   *
+   * @param type the converter type
+   * @return a new converter instance of {@code type}
+   */
   private static Converter createInstance(ConverterType type) {
     switch (type) {
       case GETTER_SETTER:
