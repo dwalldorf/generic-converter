@@ -18,27 +18,26 @@ Similarily to this, you will want to annotate your `UserDto`: `@Convertible(dest
 This also works for any `@Convertile` class, that in itslef, contains another `@Convertible` annotated class. The Converter will use itself to convert any child `@Convertible` objects.
 
 # How to use it
-Configure the converter (optional): 
-
-    ConverterFactory.configureType({type});
-
-The default configuration is `ConverterType.GETTER_SETTER`
+#### Configure the converter (optional): 
+```java
+ConverterFactory.configureType({type});
+```
+The default configuration is `ConverterType.GETTER_SETTER`.
 
 See available [types](src/main/java/dwalldorf/jadecr/ConverterType)
 
 
-Obtain an instance:
-
-    ConverterFactory.getInstance();
-
+#### Obtain an instance:
+```java
+ConverterFactory.getInstance();
+```
 This will return a singleton instance of the configured type.
 
-
-Convert a `@Convertible` annotated object: 
-
-    // user is annotated: @Convertible(destClass = UserDto.class)
-    UserDto userDto = (UserDto) converter.convert(user);
-
+#### Convert a `@Convertible` annotated object: 
+```java
+// user is annotated: @Convertible(destClass = UserDto.class)
+UserDto userDto = (UserDto) converter.convert(user);
+```
 In case an error occurs while converting an object, the converter will throw a `ConversionException`. It contains the originally thrown `Exception`. As of now, there is no sophisticated exception handling / prevention. If you find a bug, feel free to contribute and send a pull request! :)
 
 # License
