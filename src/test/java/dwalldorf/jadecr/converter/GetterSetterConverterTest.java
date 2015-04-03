@@ -16,7 +16,7 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-package dwalldorf.jadecr;
+package dwalldorf.jadecr.converter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,16 +27,16 @@ import sample.dto.UserDto;
 import sample.model.Message;
 import sample.model.User;
 
-public class PojoConverterTest {
+public class GetterSetterConverterTest {
 
-  private PojoConverter pojoConverter = new PojoConverter();
+  private Converter getterSetterConverter = new GetterSetterConverter();
 
   @Test
   public void testConvertToDto() {
     User user = mockUser();
     Message message = mockMessage(user);
 
-    MessageDto messageDto = (MessageDto) pojoConverter.convert(message);
+    MessageDto messageDto = (MessageDto) getterSetterConverter.convert(message);
     UserDto userDto = messageDto.getUser();
 
     assertNotNull(messageDto);
@@ -56,7 +56,7 @@ public class PojoConverterTest {
     UserDto userDto = mockUserDto();
     MessageDto messageDto = mockMessageDto(userDto);
 
-    Message message = (Message) pojoConverter.convert(messageDto);
+    Message message = (Message) getterSetterConverter.convert(messageDto);
     User user = message.getUser();
 
     assertNotNull(messageDto);

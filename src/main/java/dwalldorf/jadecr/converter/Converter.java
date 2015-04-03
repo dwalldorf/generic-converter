@@ -16,14 +16,30 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-ext {
-  projectName = 'jadecR'
-  projectGroup = 'dwalldorf'
-  projectVersion = '1.1.0-SNAPSHOT'
+package dwalldorf.jadecr.converter;
 
-  bintrayRepo = 'dwalldorf-java'
+import dwalldorf.jadecr.exception.ConversionException;
 
-  mainClass = 'dwalldorf.jadecr.PojoConverter'
-  sourceCompatibilityVersion = '1.8'
-  gradleVersion = '2.3'
+/**
+ * A converter for POJO-style java objects.
+ * <p>
+ * It allows {@link dwalldorf.jadecr.Convertible} annotated objects to be converted.
+ *
+ * @see dwalldorf.jadecr.Convertible
+ */
+public interface Converter {
+
+  /**
+   * Converts {@code src} to an object of {@code destType}, specified by the {@link dwalldorf.jadecr.Convertible}
+   * annotation.
+   * <p>
+   * {@code src} must be annotated {@code Convertible}.
+   *
+   * @param src object to convert
+   * @return the converted object
+   *
+   * @throws dwalldorf.jadecr.exception.ConversionException
+   */
+  public Object convert(Object src) throws ConversionException;
+
 }
