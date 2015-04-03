@@ -18,26 +18,47 @@
  */
 package dwalldorf.jadecr.converter;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import sample.dto.MessageDto;
 import sample.dto.UserDto;
 import sample.model.Message;
 import sample.model.User;
 
-public class PropertyConverterTest extends TestCase {
+public class PropertyConverterTest {
 
   private Converter propertyConverter = new PropertyConverter();
 
   @Test
-  public void testConvertToDto() {
+  public void doesNotReturnNull() throws Exception {
+    User user = mockUser();
+
+    Object userDto = propertyConverter.convert(user);
+    assertNotNull(userDto);
+  }
+
+  @Test
+  public void convertsSimpleObject() throws Exception {
+    User user = mockUser();
+    UserDto userDto = (UserDto) propertyConverter.convert(user);
+
+    assertEquals(user.getId(), userDto.getId());
+    assertEquals(user.getUsername(), userDto.getUsername());
+    assertEquals(user.getPassword(), userDto.getPassword());
+    assertEquals(user.getEmail(), userDto.getEmail());
+  }
+
+  @Test
+  public void convertsNestObject() {
     User user = mockUser();
     Message message = mockMessage(user);
 
     MessageDto messageDto = (MessageDto) propertyConverter.convert(message);
     UserDto userDto = messageDto.getUser();
 
-    assertNotNull(messageDto);
     assertEquals(message.getId(), messageDto.getId());
     assertEquals(message.getTitle(), messageDto.getTitle());
     assertEquals(message.getMessage(), messageDto.getMessage());
@@ -50,7 +71,7 @@ public class PropertyConverterTest extends TestCase {
   }
 
   @Test
-  public void testConvertToEntity() {
+  public void convertOtherDirection() {
     UserDto userDto = mockUserDto();
     MessageDto messageDto = mockMessageDto(userDto);
 
