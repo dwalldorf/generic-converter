@@ -23,6 +23,7 @@ Configure the converter (optional):
     ConverterFactory.configureType({type});
 
 The default configuration is `ConverterType.GETTER_SETTER`
+
 See available [types](src/main/java/dwalldorf/jadecr/ConverterType)
 
 
