@@ -37,6 +37,7 @@ import java.util.Optional;
  */
 public class GetterSetterConverter implements Converter {
 
+  @Override
   public Object convert(Object src) throws ConversionException {
     if (!ConvertUtil.isConvertibleObject(src)) {
       return null;
