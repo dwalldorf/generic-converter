@@ -21,9 +21,9 @@ package dwalldorf.jadecr.converter;
 import dwalldorf.jadecr.exception.ConversionException;
 
 /**
- * This converter will search for all properties of the object to be converted, and try to find a property with the
- * same name and of the same type, in the {@code destClass} object.<br />
- * It will ignore getters and setters and use reflection, to directly set values.<br /><br />
+ * This converter will search for all properties of the object to be converted, and try to find a property with the same
+ * name and of the same type, in the {@code destClass} object.<br /> It will ignore getters and setters and use
+ * reflection, to directly set values.<br /><br />
  *
  * Objects to be converted, must have the {@link dwalldorf.jadecr.Convertible} annotation configured.
  *
@@ -38,6 +38,23 @@ public class PropertyConverter implements Converter {
      * author: Daniel Walldorf <d.walldorf@me.com>
      * creation date: 02.04.2015 23:10
      */
-    return null;
+
+    if (!ConvertUtil.isConvertibleObject(src)) {
+      return null;
+    }
+
+    try {
+      Object dest = ConvertUtil.getNewDestInstance(src);
+      copyValues(src, dest);
+
+      return dest;
+    } catch (Exception e) {
+      throw new ConversionException(e.getMessage(), e);
+    }
   }
+
+  private void copyValues(final Object src, Object dest) {
+
+  }
+
 }
