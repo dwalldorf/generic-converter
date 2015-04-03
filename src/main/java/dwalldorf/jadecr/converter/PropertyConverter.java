@@ -24,11 +24,9 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * This converter will search for all properties of the object to be converted, and try to find a property with the
- * same
- * name and of the same type, in the {@code destClass} object.<br /> It will ignore getters and setters and use
- * reflection, to directly set values.
- * <p>
- * <p>
+ * same name and of the same type, in the {@code destClass} object.<br>
+ * It will ignore getters and setters and use reflection, to directly set values.
+ * <br><br>
  * Objects to be converted, must have the {@link dwalldorf.jadecr.Convertible} annotation configured.
  *
  * @see dwalldorf.jadecr.Convertible

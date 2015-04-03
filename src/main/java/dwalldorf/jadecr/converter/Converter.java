@@ -21,8 +21,7 @@ package dwalldorf.jadecr.converter;
 import dwalldorf.jadecr.exception.ConversionException;
 
 /**
- * A converter for POJO-style java objects.
- * <p>
+ * A converter for POJO-style java objects.<br>
  * It allows {@link dwalldorf.jadecr.Convertible} annotated objects to be converted.
  *
  * @see dwalldorf.jadecr.Convertible
@@ -31,14 +30,13 @@ public interface Converter {
 
   /**
    * Converts {@code src} to an object of {@code destType}, specified by the {@link dwalldorf.jadecr.Convertible}
-   * annotation.
-   * <p>
+   * annotation.<br>
    * {@code src} must be annotated {@code Convertible}.
    *
    * @param src object to convert
    * @return the converted object
    *
-   * @throws dwalldorf.jadecr.exception.ConversionException
+   * @throws ConversionException in case of any error
    */
   public Object convert(Object src) throws ConversionException;
 
