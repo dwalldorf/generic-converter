@@ -21,7 +21,6 @@ package dwalldorf.jadecr.converter;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import sample.dto.MessageDto;
 import sample.dto.UserDto;
