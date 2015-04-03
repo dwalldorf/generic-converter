@@ -89,7 +89,7 @@ public class GetterSetterConverter implements Converter {
    * <ul>
    *   <li>its name starts with {@code get}</li>
    *   <li>it takes exactly 0 arguments</li>
-   *   <li>its modifier is not {@code private}</li>
+   *   <li>its modifier is {@code public}</li>
    * </ul>
    *
    * @param method the method to check
