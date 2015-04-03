@@ -18,7 +18,7 @@ Similarily to this, you will want to annotate your `UserDto`: `@Convertible(dest
 This also works for any `@Convertile` class, that in itslef, contains another `@Convertible` annotated class. The Converter will use itself to convert any child `@Convertible` objects.
 
 # How to use it
-#### Configure the converter (optional): 
+###### Configure the converter (optional): 
 ```java
 ConverterFactory.configureType({type});
 ```
@@ -27,13 +27,13 @@ The default configuration is `ConverterType.GETTER_SETTER`.
 See available [types](src/main/java/dwalldorf/jadecr/ConverterType)
 
 
-#### Obtain an instance:
+###### Obtain an instance:
 ```java
 ConverterFactory.getInstance();
 ```
 This will return a singleton instance of the configured type.
 
-#### Convert an object: 
+###### Convert an object: 
 ```java
 // user is annotated: @Convertible(destClass = UserDto.class)
 UserDto userDto = (UserDto) converter.convert(user);
