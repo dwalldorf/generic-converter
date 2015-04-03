@@ -20,8 +20,6 @@ package dwalldorf.jadecr.converter;
 
 import dwalldorf.jadecr.exception.ConversionException;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -51,7 +49,7 @@ public class PropertyConverter implements Converter {
     }
   }
 
-  private void copyValues(final Object src, Object dest) throws IllegalAccessException {
+  private void copyValues(final Object src, final Object dest) throws IllegalAccessException {
     ReflectionUtils.doWithFields(src.getClass(), field -> {
       Field destField = ReflectionUtils.findField(dest.getClass(), field.getName());
 
@@ -60,39 +58,25 @@ public class PropertyConverter implements Converter {
       }
       ReflectionUtils.makeAccessible(field);
       ReflectionUtils.makeAccessible(destField);
-
       Object value = field.get(src);
-      if (ConvertUtil.isConvertibleObject(value)) {
-        value = this.convert(value);
-      }
 
-      ReflectionUtils.setField(destField, dest, value);
+      setValue(value, destField, dest);
     });
-
-//    Map<String, Object> srcKeyValueMap = getKeyValueMap(src);
-//    Map<String, Object> destKeyValueMap = getKeyValueMap(dest);
-//
-//    for (Map.Entry<String, Object> entry : srcKeyValueMap.entrySet()) {
-//      String propertyName = entry.getKey();
-//
-//      try {
-//        Field field = dest.getClass().getDeclaredField(propertyName);
-//        field.setAccessible(true);
-//        field.set(dest, entry.getValue());
-//      } catch (NoSuchFieldException ignored) {
-//      }
-//    }
   }
 
-  private Map<String, Object> getKeyValueMap(final Object obj) throws IllegalAccessException {
-    Map<String, Object> retVal = new HashMap<>();
+  private void setValue(Object value, Field destField, Object dest) {
+    if (value != null) {
+      if (ConvertUtil.isConvertibleObject(value)) {
+        value = convert(value);
+      }
 
-    Field[] declaredFields = obj.getClass().getDeclaredFields();
-    for (Field field : declaredFields) {
-      retVal.put(field.getName(), field.get(obj));
+      String valueTypeName = value.getClass().getName();
+      String destTypeName = destField.getType().getName();
+
+      if (valueTypeName.equals(destTypeName)) {
+        ReflectionUtils.setField(destField, dest, value);
+      }
     }
-
-    return retVal;
   }
 
 }
