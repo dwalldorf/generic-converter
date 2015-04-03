@@ -1,4 +1,6 @@
 ## 1.1.0-SNAPSHOT
+- documentation
+- configure which converter you want to use
 - convert by fields / ignore getters and setters
 
 ## 1.0.1

@@ -11,22 +11,33 @@ There is a [`@Convertible`](src/main/java/dwalldorf/jadecr/Convertible.java) ann
 
 Imagine you have a `User` model and a `UserDto`, to communicate the user to the outside world. 
 
-You would annotate the `User` model as follows: `@Convertible(destClass = UserDto.class)`. You can now pass the `User` model to the [converter](src/main/java/dwalldorf/jadecr/PojoConverter.java), and it will know, which class you want it to be converted to. 
+You would annotate the `User` model as follows: `@Convertible(destClass = UserDto.class)`. You can now pass the `User` model to the [converter](src/main/java/dwalldorf/jadecr/converter/Converter.java), and it will know, which class you want it to be converted to. 
 
 Similarily to this, you will want to annotate your `UserDto`: `@Convertible(destClass = User.class)`. So you can convert them each way. 
 
 This also works for any `@Convertile` class, that in itslef, contains another `@Convertible` annotated class. The Converter will use itself to convert any child `@Convertible` objects.
 
 # How to use it
-Create a new instance of the converter: 
+###### Configure the converter (optional): 
+```java
+ConverterFactory.configureType({type});
+```
+The default configuration is `ConverterType.GETTER_SETTER`.
 
-    PojoConverter converter = new PojoConveter();
-    
-Convert a `@Convertible` annotated object: 
+See available [types](src/main/java/dwalldorf/jadecr/ConverterType.java)
 
-    // user is annotated: @Convertible(destClass = UserDto.class)
-    UserDto userDto = (UserDto) converter.convert(user);
 
+###### Obtain an instance:
+```java
+ConverterFactory.getInstance();
+```
+This will return a singleton instance of the configured type.
+
+###### Convert an object: 
+```java
+// user is annotated: @Convertible(destClass = UserDto.class)
+UserDto userDto = (UserDto) converter.convert(user);
+```
 In case an error occurs while converting an object, the converter will throw a `ConversionException`. It contains the originally thrown `Exception`. As of now, there is no sophisticated exception handling / prevention. If you find a bug, feel free to contribute and send a pull request! :)
 
 # License
