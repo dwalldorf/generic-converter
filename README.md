@@ -18,10 +18,21 @@ Similarily to this, you will want to annotate your `UserDto`: `@Convertible(dest
 This also works for any `@Convertile` class, that in itslef, contains another `@Convertible` annotated class. The Converter will use itself to convert any child `@Convertible` objects.
 
 # How to use it
-Create a new instance of the converter: 
+Configure the converter (optional): 
 
-    PojoConverter converter = new PojoConveter();
-    
+    ConverterFactory.configureType({type});
+
+The default configuration is `ConverterType.GETTER_SETTER`
+See available [types](src/main/java/dwalldorf/jadecr/ConverterType)
+
+
+Obtain an instance:
+
+    ConverterFactory.getInstance();
+
+This will return a singleton instance of the configured type.
+
+
 Convert a `@Convertible` annotated object: 
 
     // user is annotated: @Convertible(destClass = UserDto.class)
