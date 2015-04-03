@@ -44,9 +44,9 @@ apply from: 'settings.gradle'
 apply from: 'secret.gradle'
 
 dependencies {
-  compile 'org.springframework:spring-core:2.5.6'
+  compile 'org.springframework:spring-core:4.1.6.RELEASE'
 
-  testCompile 'junit:junit:4.11'
+  testCompile 'junit:junit:4.12'
 }
 
 version = projectVersion
