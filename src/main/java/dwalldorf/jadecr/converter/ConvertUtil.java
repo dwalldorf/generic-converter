@@ -33,7 +33,7 @@ class ConvertUtil {
    * @return new instance of {@code destClass} in {@code src}
    * @throws Exception
    */
-  static Object getNewDestInstance(final Object src) throws Exception {
+  static Object getNewDestInstance(final Object src) throws ConversionException, ReflectiveOperationException {
     return getConvertibleDestClass(src).newInstance();
   }
 
@@ -44,9 +44,8 @@ class ConvertUtil {
    * @return the destClass
    */
   static Class getConvertibleDestClass(final Object object) {
-    Convertible annotation = object.getClass().getAnnotation(Convertible.class);
-
-    if (annotation != null) {
+    if (isConvertibleObject(object)) {
+      Convertible annotation = object.getClass().getAnnotation(Convertible.class);
       return annotation.destClass();
     }
     throw new ConversionException("tried to convert inconvertible class: " + object.getClass().getName());
