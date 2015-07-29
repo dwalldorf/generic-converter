@@ -19,6 +19,7 @@
 package dwalldorf.jadecr.converter;
 
 import dwalldorf.jadecr.Convertible;
+import dwalldorf.jadecr.exception.ConversionException;
 
 /**
  * A helper util for actual converters.
@@ -30,7 +31,6 @@ class ConvertUtil {
    *
    * @param src the object to determine the desired class from
    * @return new instance of {@code destClass} in {@code src}
-   *
    * @throws Exception
    */
   static Object getNewDestInstance(final Object src) throws Exception {
@@ -45,7 +45,11 @@ class ConvertUtil {
    */
   static Class getConvertibleDestClass(final Object object) {
     Convertible annotation = object.getClass().getAnnotation(Convertible.class);
-    return annotation.destClass();
+
+    if (annotation != null) {
+      return annotation.destClass();
+    }
+    throw new ConversionException("tried to convert inconvertible class: " + object.getClass().getName());
   }
 
   /**
