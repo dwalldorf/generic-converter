@@ -8,7 +8,7 @@ pipeline {
     }
   }
   tools {
-    maven 'mvn3'
+    gradle 'gradle3'
   }
   triggers {
     pollSCM('* * * * *')
