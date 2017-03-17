@@ -7,9 +7,6 @@ pipeline {
       }
     }
   }
-  tools {
-    gradle 'gradle3'
-  }
   triggers {
     pollSCM('* * * * *')
   }
