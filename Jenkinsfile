@@ -28,6 +28,11 @@ pipeline {
         )
       }
     }
+    stage('Fingerprint') {
+      steps {
+        fingerprint 'build/libs/*.jar'
+      }
+    }
   }
   triggers {
     pollSCM('* * * * *')
