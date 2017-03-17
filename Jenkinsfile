@@ -4,6 +4,7 @@ pipeline {
     stage('Test') {
       steps {
         sh './gradlew test'
+        libraryResource 'jadecr-secret'
       }
     }
   }
