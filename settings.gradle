@@ -24,5 +24,5 @@ ext {
   bintrayRepo = 'dwalldorf-java'
 
   sourceCompatibilityVersion = '1.8'
-  gradleVersion = '2.3'
+  gradleVersion = '3.4.1'
 }
