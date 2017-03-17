@@ -14,7 +14,7 @@ pipeline {
             
           },
           "Build javadoc": {
-            sh './gradlew javadoc'
+            sh './gradlew javadocJar'
             
           },
           "Build sources": {
@@ -22,7 +22,7 @@ pipeline {
             
           },
           "Build lib": {
-            sh './gradlew build'
+            sh './gradlew jar'
             
           }
         )
