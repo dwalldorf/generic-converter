@@ -22,8 +22,8 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE'
-    classpath 'org.springframework:springloaded:1.2.3.RELEASE'
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE'
+    classpath 'org.springframework:springloaded:1.2.6.RELEASE'
     classpath 'com.adaptc.gradle:nexus-workflow:0.6'
   }
 }
@@ -44,7 +44,7 @@ apply from: 'settings.gradle'
 apply from: 'secret.gradle'
 
 dependencies {
-  compile 'org.springframework:spring-core:4.1.6.RELEASE'
+  compile 'org.springframework:spring-core:4.3.7.RELEASE'
 
   testCompile 'junit:junit:4.12'
 }
