@@ -34,7 +34,10 @@ pipeline {
             archiveArtifacts 'build/libs/*.jar'
           },
           "Publish": {
-            publish './gradlew bintray'
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
+                                        usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
+              publish './gradlew bintray'
+            }
           }
         )
       }
