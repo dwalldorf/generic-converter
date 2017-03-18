@@ -26,23 +26,13 @@ pipeline {
         parallel(
           "Archive test results": {
             junit 'build/test-results/**/*.xml'
-            archiveArtifacts 'build/reports/tests/**/*'
-            fingerprint 'build/reports/tests/**/*'
-          },
-          "Archive sources": {
-            archiveArtifacts 'build/libs/*-sources.jar'
-            fingerprint 'build/libs/*.jar'
-          },
-          "Archive jar": {
-            archiveArtifacts 'build/libs/*-sources.jar'
-            fingerprint 'build/libs/*.jar'
-          },
-          "Archive javadoc": {
-            archiveArtifacts 'build/docs/javadoc/**/*'
-            archiveArtifacts 'build/libs/*-javadoc.jar'
 
-            fingerprint 'build/docs/javadoc/**/*'
-            fingerprint 'build/libs/*-javadoc.jar'
+            archiveArtifacts 'build/test-results/**/*.xml'
+            fingerprint 'build/test-results/**/*.xml'
+          },
+          "Archive libs": {
+            archiveArtifacts 'build/libs/*.jar'
+            fingerprint 'build/libs/*.jar'
           },
           "Archive pom": {
             archiveArtifacts 'build/pom.xml'
