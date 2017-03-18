@@ -27,8 +27,8 @@ pipeline {
                 "Archive test results": {
                   junit 'build/test-results/**/*.xml'
 
-                  archiveArtifacts 'build/test-results/**/*.xml'
-                  fingerprint 'build/test-results/**/*.xml'
+                  archiveArtifacts 'build/test-results/test/*.xml'
+                  fingerprint 'build/test-results/test/*.xml'
                 },
                 "Archive libs": {
                   archiveArtifacts 'build/libs/*.jar'
@@ -37,6 +37,10 @@ pipeline {
                 "Archive pom": {
                   archiveArtifacts 'build/pom.xml'
                   fingerprint 'build/pom.xml'
+                },
+                "Archive Jenkinsfile": {
+                  archiveArtifacts 'Jenkinsfile'
+                  fingerprint 'Jenkinsfile'
                 }
         )
       }
