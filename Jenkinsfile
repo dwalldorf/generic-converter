@@ -28,14 +28,14 @@ pipeline {
         )
       }
     }
-    stage('Fingerprint') {
+    stage('Artifacts') {
       steps {
         parallel(
           "Fingerprint": {
             fingerprint 'build/libs/*.jar'
             
           },
-          "Archive artifacts": {
+          "Archive": {
             archiveArtifacts 'build/libs/*.jar'
             
           }
