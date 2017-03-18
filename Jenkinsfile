@@ -31,19 +31,21 @@ pipeline {
         },
         "Archive": {
           archiveArtifacts 'build/libs/*.jar'
-        },
-        "Publish": {
-          if(env.BRANCHNAME == "master"){
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
-                                        usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
-              sh './gradlew bintrayUpload'
-            }
-          }
         }
       }
     }
-    stage('publish') {
-
+    stage('Publish Artifact') {
+      when {
+        expression { env..BRANCH_NAME == "master" }
+      }
+      steps {
+        "Publish": {
+          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
+                                      usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
+            sh './gradlew bintrayUpload'
+          }
+        }
+      }
     }
   }
   triggers {
