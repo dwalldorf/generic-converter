@@ -132,3 +132,7 @@ task writeNewPom << {
     }
   }.writeTo("$buildDir/pom.xml")
 }
+
+task wrapper(type: Wrapper) {
+  gradleVersion = gradleVersion
+}
