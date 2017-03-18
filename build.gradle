@@ -41,7 +41,6 @@ apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 
 apply from: 'settings.gradle'
-//apply from: 'secret.gradle'
 
 dependencies {
   compile 'org.springframework:spring-core:4.3.7.RELEASE'
