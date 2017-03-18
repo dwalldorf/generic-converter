@@ -41,11 +41,9 @@ pipeline {
         expression { env..BRANCH_NAME == "master" }
       }
       steps {
-        "Publish": {
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
-                                      usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
-            sh './gradlew bintrayUpload'
-          }
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
+                                    usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
+          sh './gradlew bintrayUpload'
         }
       }
     }
