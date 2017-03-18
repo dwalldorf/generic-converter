@@ -46,6 +46,13 @@ pipeline {
           sh './gradlew bintrayUpload'
         }
       }
+
+      when {
+        expression { env..BRANCH_NAME == "master" }
+      }
+      steps {
+        sh: 'echo "Only publishing master"'
+      }
     }
   }
   triggers {
