@@ -23,15 +23,17 @@ pipeline {
     }
     stage('Artifacts') {
       steps {
-        "Fingerprint": {
-          fingerprint 'build/libs/*.jar'
-        },
-        "Publish test results": {
-          junit 'build/test-results/**/*.xml'
-        },
-        "Archive": {
-          archiveArtifacts 'build/libs/*.jar'
-        }
+        parallel(
+          "Fingerprint": {
+            fingerprint 'build/libs/*.jar'
+          },
+          "Publish test results": {
+            junit 'build/test-results/**/*.xml'
+          },
+          "Archive": {
+            archiveArtifacts 'build/libs/*.jar'
+          }
+        )
       }
     }
     stage('Publish Artifact') {
