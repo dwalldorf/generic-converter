@@ -24,14 +24,22 @@ pipeline {
     stage('Artifacts') {
       steps {
         parallel(
-          "Fingerprint": {
-            fingerprint 'build/libs/*.jar'
-          },
           "Publish test results": {
             junit 'build/test-results/**/*.xml'
+            archiveArtifacts 'build/reports/tests/**/*'
+            fingerprint 'build/reports/tests/**/*'
           },
-          "Archive": {
+          "Archive libs": {
             archiveArtifacts 'build/libs/*.jar'
+            fingerprint 'build/libs/*.jar'
+          },
+          "Archive pom": {
+            archiveArtifacts 'build/pom.xml'
+            fingerprint 'build/pom.xml'
+          },
+          "Publish javadoc": {
+            archiveArtifacts 'build/docs/javadoc/**/*'
+            fingerprint 'build/docs/javadoc/**/*'
           }
         )
       }
