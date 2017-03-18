@@ -36,7 +36,7 @@ pipeline {
           "Publish": {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
                                         usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
-              publish './gradlew bintray'
+              sh './gradlew bintray'
             }
           }
         )
