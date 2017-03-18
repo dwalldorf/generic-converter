@@ -14,7 +14,7 @@ pipeline {
             
           },
           "Build javadoc": {
-            sh './gradlew javadoc'
+            sh './gradlew javadocJar'
             
           },
           "Build sources": {
@@ -22,7 +22,21 @@ pipeline {
             
           },
           "Build lib": {
-            sh './gradlew build'
+            sh './gradlew jar'
+            
+          }
+        )
+      }
+    }
+    stage('Fingerprint') {
+      steps {
+        parallel(
+          "Fingerprint": {
+            fingerprint 'build/libs/*.jar'
+            
+          },
+          "Archive artifacts": {
+            archiveArtifacts 'build/libs/*.jar'
             
           }
         )
