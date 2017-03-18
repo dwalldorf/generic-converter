@@ -24,7 +24,7 @@ pipeline {
     stage('Artifacts') {
       steps {
         parallel(
-          "Publish test results": {
+          "Archive test results": {
             junit 'build/test-results/**/*.xml'
             archiveArtifacts 'build/reports/tests/**/*'
             fingerprint 'build/reports/tests/**/*'
@@ -37,7 +37,7 @@ pipeline {
             archiveArtifacts 'build/pom.xml'
             fingerprint 'build/pom.xml'
           },
-          "Publish javadoc": {
+          "Archive javadoc": {
             archiveArtifacts 'build/docs/javadoc/**/*'
             fingerprint 'build/docs/javadoc/**/*'
           }
