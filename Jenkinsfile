@@ -9,35 +9,35 @@ pipeline {
     stage('Build') {
       steps {
         parallel(
-          "Build sources": {
-            sh './gradlew sourcesJar'
-          },
-          "Build javadoc": {
-            sh './gradlew javadocJar'
-          },
-          "Build lib": {
-            sh './gradlew jar'
-          }
+                "Build sources": {
+                  sh './gradlew sourcesJar'
+                },
+                "Build javadoc": {
+                  sh './gradlew javadocJar'
+                },
+                "Build lib": {
+                  sh './gradlew jar'
+                }
         )
       }
     }
     stage('Artifacts') {
       steps {
         parallel(
-          "Archive test results": {
-            junit 'build/test-results/**/*.xml'
+                "Archive test results": {
+                  junit 'build/test-results/**/*.xml'
 
-            archiveArtifacts 'build/test-results/**/*.xml'
-            fingerprint 'build/test-results/**/*.xml'
-          },
-          "Archive libs": {
-            archiveArtifacts 'build/libs/*.jar'
-            fingerprint 'build/libs/*.jar'
-          },
-          "Archive pom": {
-            archiveArtifacts 'build/pom.xml'
-            fingerprint 'build/pom.xml'
-          }
+                  archiveArtifacts 'build/test-results/**/*.xml'
+                  fingerprint 'build/test-results/**/*.xml'
+                },
+                "Archive libs": {
+                  archiveArtifacts 'build/libs/*.jar'
+                  fingerprint 'build/libs/*.jar'
+                },
+                "Archive pom": {
+                  archiveArtifacts 'build/pom.xml'
+                  fingerprint 'build/pom.xml'
+                }
         )
       }
     }
@@ -49,8 +49,8 @@ pipeline {
         }
       }
       steps {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
-                                    usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
+        withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
+                          usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
           sh './gradlew bintrayUpload'
         }
       }
