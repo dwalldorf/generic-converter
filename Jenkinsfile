@@ -23,24 +23,27 @@ pipeline {
     }
     stage('Artifacts') {
       steps {
-        parallel(
-          "Fingerprint": {
-            fingerprint 'build/libs/*.jar'
-          },
-          "Publish test results": {
-            junit 'build/test-results/**/*.xml'
-          },
-          "Archive": {
-            archiveArtifacts 'build/libs/*.jar'
-          },
-          "Publish": {
+        "Fingerprint": {
+          fingerprint 'build/libs/*.jar'
+        },
+        "Publish test results": {
+          junit 'build/test-results/**/*.xml'
+        },
+        "Archive": {
+          archiveArtifacts 'build/libs/*.jar'
+        },
+        "Publish": {
+          if(env.BRANCHNAME == "master"){
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
                                         usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
-              sh './gradlew bintray'
+              sh './gradlew bintrayUpload'
             }
           }
-        )
+        }
       }
+    }
+    stage('publish') {
+
     }
   }
   triggers {
