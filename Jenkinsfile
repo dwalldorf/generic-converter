@@ -51,7 +51,7 @@ pipeline {
         expression { env..BRANCH_NAME == "master" }
       }
       steps {
-        sh: 'echo "Only publishing master"'
+        sh 'echo "Only publishing master"'
       }
     }
   }
