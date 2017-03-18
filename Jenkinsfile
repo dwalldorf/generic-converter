@@ -38,20 +38,16 @@ pipeline {
     }
     stage('Publish Artifact') {
       when {
-        expression { env..BRANCH_NAME == "master" }
+        expression {
+          GIT_BRANCH = 'origin/' + sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+          return GIT_BRANCH == 'origin/master' || params.FORCE_FULL_BUILD
+        }
       }
       steps {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bintray',
                                     usernameVariable: 'BINTRAY_USERNAME', passwordVariable: 'BINTRAY_API_KEY']]) {
           sh './gradlew bintrayUpload'
         }
-      }
-
-      when {
-        expression { env..BRANCH_NAME == "master" }
-      }
-      steps {
-        sh 'echo "Only publishing master"'
       }
     }
   }
