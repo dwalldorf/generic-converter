@@ -32,6 +32,9 @@ pipeline {
           },
           "Archive": {
             archiveArtifacts 'build/libs/*.jar'
+          },
+          "Publish": {
+            publish './gradlew bintray'
           }
         )
       }

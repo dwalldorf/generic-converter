@@ -77,43 +77,43 @@ artifacts {
   archives javadocJar
 }
 
-//bintray {
-//  user = bintrayUser
-//  key = bintrayApiKey
-//  configurations = ['archives']
-//
-//  dryRun = false
-//  publish = true
-//
-//  filesSpec {
-//    from 'files'
-//    into 'standalone_files/level1'
-//    rename '(.+)\\.(.+)', '$1-suffix.$2'
-//  }
-//
-//  pkg {
-//    repo = bintrayRepo
-//    group = projectGroup
-//    name = projectName
-//
-//    //noinspection GroovyAssignabilityCheck
-//    version {
-//      //noinspection GrReassignedInClosureLocalVar
-//      name = projectVersion
-//      vcsTag = projectVersion
-//      gpg {
-//        sign = true
-//      }
-//    }
-//
-//    websiteUrl = 'https://github.com/dwalldorf/jadecR'
-//    issueTrackerUrl = 'https://github.com/dwalldorf/jadecR/issues'
-//    vcsUrl = 'https://github.com/dwalldorf/jadecR'
-//    licenses = ['GPL-2.0']
-//    labels = ['java', 'converter', 'DTO entity converter', 'generic']
-//    publicDownloadNumbers = true
-//  }
-//}
+bintray {
+  user = bintrayUser
+  key = bintrayApiKey
+  configurations = ['archives']
+
+  dryRun = false
+  publish = true
+
+  filesSpec {
+    from 'files'
+    into 'standalone_files/level1'
+    rename '(.+)\\.(.+)', '$1-suffix.$2'
+  }
+
+  pkg {
+    repo = bintrayRepo
+    group = projectGroup
+    name = projectName
+
+    //noinspection GroovyAssignabilityCheck
+    version {
+      //noinspection GrReassignedInClosureLocalVar
+      name = projectVersion
+      vcsTag = projectVersion
+      gpg {
+        sign = true
+      }
+    }
+
+    websiteUrl = 'https://github.com/dwalldorf/jadecR'
+    issueTrackerUrl = 'https://github.com/dwalldorf/jadecR/issues'
+    vcsUrl = 'https://github.com/dwalldorf/jadecR'
+    licenses = ['GPL-2.0']
+    labels = ['java', 'converter', 'DTO entity converter', 'generic']
+    publicDownloadNumbers = true
+  }
+}
 
 configurations {
   published
