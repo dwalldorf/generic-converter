@@ -6,24 +6,17 @@ pipeline {
         sh './gradlew clean test'
       }
     }
-    stage('Publish test results') {
+    stage('Build') {
       steps {
         parallel(
-          "Publish test results": {
-            junit 'build/test-results/**/*.xml'
-            
+          "Build sources": {
+            sh './gradlew sourcesJar'
           },
           "Build javadoc": {
             sh './gradlew javadocJar'
-            
-          },
-          "Build sources": {
-            sh './gradlew sourcesJar'
-            
           },
           "Build lib": {
             sh './gradlew jar'
-            
           }
         )
       }
@@ -33,11 +26,12 @@ pipeline {
         parallel(
           "Fingerprint": {
             fingerprint 'build/libs/*.jar'
-            
+          },
+          "Publish test results": {
+            junit 'build/test-results/**/*.xml'
           },
           "Archive": {
             archiveArtifacts 'build/libs/*.jar'
-            
           }
         )
       }
