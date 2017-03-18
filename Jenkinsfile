@@ -29,17 +29,24 @@ pipeline {
             archiveArtifacts 'build/reports/tests/**/*'
             fingerprint 'build/reports/tests/**/*'
           },
-          "Archive libs": {
-            archiveArtifacts 'build/libs/*.jar'
+          "Archive sources": {
+            archiveArtifacts 'build/libs/*-sources.jar'
             fingerprint 'build/libs/*.jar'
+          },
+          "Archive jar": {
+            archiveArtifacts 'build/libs/*-sources.jar'
+            fingerprint 'build/libs/*.jar'
+          },
+          "Archive javadoc": {
+            archiveArtifacts 'build/docs/javadoc/**/*'
+            archiveArtifacts 'build/libs/*-javadoc.jar'
+
+            fingerprint 'build/docs/javadoc/**/*'
+            fingerprint 'build/libs/*-javadoc.jar'
           },
           "Archive pom": {
             archiveArtifacts 'build/pom.xml'
             fingerprint 'build/pom.xml'
-          },
-          "Archive javadoc": {
-            archiveArtifacts 'build/docs/javadoc/**/*'
-            fingerprint 'build/docs/javadoc/**/*'
           }
         )
       }
