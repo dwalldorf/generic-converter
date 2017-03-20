@@ -19,9 +19,9 @@
 ext {
   projectName = 'jadecR'
   projectGroup = 'dwalldorf'
-  projectVersion = '1.1.0'
+  projectVersion = '1.2.0-RC.2'
 
-  bintrayRepo = 'dwalldorf-java'
+  bintrayRepo = 'maven'
 
   sourceCompatibilityVersion = '1.8'
   gradleVersion = '3.4.1'

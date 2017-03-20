@@ -38,10 +38,9 @@ repositories {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 apply from: 'settings.gradle'
-//apply from: 'secret.gradle'
 
 dependencies {
   compile 'org.springframework:spring-core:4.3.7.RELEASE'
@@ -78,8 +77,8 @@ artifacts {
 }
 
 bintray {
-  user = bintrayUser
-  key = bintrayApiKey
+  user = System.getenv("BINTRAY_USER")
+  key = System.getenv("BINTRAY_API_KEY")
   configurations = ['archives']
 
   dryRun = false
@@ -119,7 +118,7 @@ configurations {
   published
 }
 
-task writeNewPom << {
+task writeNewPom {
   pom {
     project {
       licenses {
@@ -131,4 +130,8 @@ task writeNewPom << {
       }
     }
   }.writeTo("$buildDir/pom.xml")
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = gradleVersion
 }
