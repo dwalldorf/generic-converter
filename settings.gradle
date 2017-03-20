@@ -19,7 +19,7 @@
 ext {
   projectName = 'jadecR'
   projectGroup = 'dwalldorf'
-  projectVersion = '1.2.0-RC.1'
+  projectVersion = '1.2.0-RC.2'
 
   bintrayRepo = 'maven'
 
