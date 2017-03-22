@@ -60,6 +60,9 @@ pipeline {
       }
     }
   }
+  tools {
+    jdk 'jdk8'
+  }
   triggers {
     pollSCM('* * * * *')
   }
